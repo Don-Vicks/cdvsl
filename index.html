@@ -332,6 +332,13 @@
       .hero-logo-card img {
         border-radius: 8px;
         margin: 0 auto;
+        width: 100%;
+        aspect-ratio: 4 / 4.2;
+        object-fit: cover;
+        object-position: 50% 30%;
+      }
+      @media (max-width: 900px) {
+        .hero-logo-card img { aspect-ratio: 16 / 10; }
       }
       .hero-logo-card .caption {
         margin-top: 14px;
@@ -1260,9 +1267,28 @@
         background: rgba(14, 21, 48, 0.35);
       }
       @media (max-width: 640px) {
-        .stage { border-radius: 14px; aspect-ratio: 4 / 3; }
-        .stage-btn { width: 40px; height: 40px; font-size: 20px; top: calc(50% - 20px); }
-        .thumb { width: 84px; }
+        .gal-tabs {
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          margin-right: -20px;
+          padding-right: 20px;
+          scrollbar-width: none;
+        }
+        .gal-tabs::-webkit-scrollbar { display: none; }
+        .gal-tab { flex: 0 0 auto; padding: 9px 15px; font-size: 13.5px; }
+        .stage { border-radius: 14px; aspect-ratio: 4 / 3; box-shadow: 0 10px 28px rgba(31, 46, 88, 0.22); }
+        .stage-btn { width: 36px; height: 36px; font-size: 18px; top: calc(50% - 18px); background: rgba(255, 255, 255, 0.85); }
+        .stage-btn.prev { left: 10px; }
+        .stage-btn.next { right: 10px; }
+        .stage-cap { padding: 40px 14px 12px; }
+        .stage-cap strong { font-size: 1rem; }
+        .stage-cap .count { font-size: 11.5px; }
+        .thumbs { gap: 8px; margin-right: -20px; padding-right: 20px; scroll-snap-type: x proximity; }
+        .thumb { width: 70px; border-radius: 8px; scroll-snap-align: center; opacity: 0.7; }
+        .thumb.on { transform: none; box-shadow: 0 0 0 2.5px var(--clay); }
+        .lb { padding: 52px 0 40px; }
+        .lb img { border-radius: 0; }
+        .lb .p, .lb .n { top: auto; bottom: 0; }
       }
       .lb {
         position: fixed; inset: 0; z-index: 100;
@@ -1372,8 +1398,9 @@
         </div>
         <div class="hero-logo-card">
           <img
-            src="https://47yv34ga2z.ufs.sh/f/2NpRwKYeHhfNEgXapSm3VtUxSXRlQ0LnkM1BaTgzbdieyuP4"
-            alt="CDVSI logo"
+            src="images/gallery/5986.jpg"
+            alt="CDVSI facilitator engaging participants at a training workshop"
+            fetchpriority="high"
           />
           <div class="caption">CAC/IT/NO 107382 — registered 2018</div>
         </div>
@@ -2604,6 +2631,7 @@
           b.addEventListener('click', () => {
             g = n
             i = 0
+            userAction = false
             renderThumbs()
             show()
           })
@@ -2626,24 +2654,45 @@
             t.appendChild(im)
             t.addEventListener('click', () => {
               i = n
+              userAction = true
               show()
             })
             thumbsEl.appendChild(t)
           })
         }
 
+        let userAction = false
+        const vids = {}
+        function videoFor(it) {
+          if (!vids[it.src]) {
+            const v = document.createElement('video')
+            v.src = it.src
+            v.poster = it.thumb
+            v.controls = true
+            v.playsInline = true
+            v.preload = 'auto'
+            vids[it.src] = v
+          }
+          vids[it.src].currentTime = 0
+          return vids[it.src]
+        }
+        // warm the cache once the page is idle so videos start instantly
+        const warm = () =>
+          groups.forEach((grp) =>
+            grp.items.filter((it) => it.t === 'v').forEach(videoFor),
+          )
+        if ('requestIdleCallback' in window) requestIdleCallback(warm, { timeout: 2500 })
+        else setTimeout(warm, 1500)
         function show() {
           const items = groups[g].items
           const it = items[i]
+          stage.querySelectorAll('video').forEach((v) => v.pause())
           stage.querySelectorAll('img, video, .stage-cap').forEach((e) => e.remove())
           stage.classList.toggle('is-video', it.t === 'v')
           let el
           if (it.t === 'v') {
-            el = document.createElement('video')
-            el.src = it.src
-            el.poster = it.thumb
-            el.controls = true
-            el.playsInline = true
+            el = videoFor(it)
+            if (userAction) el.play().catch(() => {})
           } else {
             el = document.createElement('img')
             el.src = it.src
@@ -2672,6 +2721,7 @@
         function step(d) {
           const n = groups[g].items.length
           i = (i + d + n) % n
+          userAction = true
           show()
         }
         function openLb() {
