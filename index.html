@@ -1156,122 +1156,129 @@
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
-        margin-bottom: 18px;
+        margin-bottom: 22px;
       }
       .gal-tab {
         font: inherit;
         font-size: 14px;
-        padding: 9px 16px;
+        font-weight: 600;
+        padding: 10px 18px;
         border-radius: 999px;
-        border: 1px solid var(--line);
-        background: #fff;
+        border: 1.5px solid var(--indigo);
+        background: transparent;
         color: var(--indigo);
         cursor: pointer;
+        transition: background 0.2s, color 0.2s;
       }
-      .gal-tab[aria-selected='true'] {
-        background: var(--indigo);
+      .gal-tab span { opacity: 0.6; font-weight: 500; margin-left: 4px; }
+      .gal-tab[aria-selected='true'] { background: var(--indigo); color: #fff; }
+      .gal-tab:focus-visible, .stage-btn:focus-visible, .thumb:focus-visible {
+        outline: 3px solid var(--gold);
+        outline-offset: 2px;
+      }
+      .stage {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #0e1530;
+        box-shadow: 0 18px 50px rgba(31, 46, 88, 0.25);
+        touch-action: pan-y;
+      }
+      .stage img, .stage video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        animation: stageIn 0.45s ease;
+      }
+      .stage img { cursor: zoom-in; }
+      .stage video { object-fit: contain; background: #000; }
+      @keyframes stageIn { from { opacity: 0; transform: scale(1.03); } to { opacity: 1; transform: none; } }
+      .stage-cap {
+        position: absolute;
+        left: 0; right: 0; bottom: 0;
+        padding: 56px 24px 20px;
+        background: linear-gradient(transparent, rgba(14, 21, 48, 0.85));
         color: #fff;
-        border-color: var(--indigo);
-      }
-      .gal-panel { display: none; position: relative; }
-      .gal-panel.active { display: block; }
-      .gal-grid {
         display: flex;
-        gap: 14px;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 16px;
+        pointer-events: none;
+      }
+      .stage.is-video .stage-cap { display: none; }
+      .stage-cap strong { font-family: 'Bricolage Grotesque'; font-size: clamp(1.1rem, 2.4vw, 1.6rem); font-weight: 700; }
+      .stage-cap .count { font-family: 'IBM Plex Mono'; font-size: 13px; opacity: 0.85; white-space: nowrap; }
+      .stage-btn {
+        position: absolute;
+        top: calc(50% - 24px);
+        width: 48px; height: 48px;
+        border-radius: 50%;
+        border: 0;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--indigo);
+        font-size: 24px;
+        line-height: 1;
+        cursor: pointer;
+        z-index: 3;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+        transition: transform 0.15s;
+      }
+      .stage-btn:hover { transform: scale(1.08); }
+      .stage-btn.prev { left: 16px; }
+      .stage-btn.next { right: 16px; }
+      .thumbs {
+        display: flex;
+        gap: 10px;
         overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        scroll-behavior: smooth;
-        padding-bottom: 12px;
+        padding: 14px 4px 8px;
         scrollbar-width: thin;
       }
-      .gal-grid .gal {
-        flex: 0 0 min(340px, 78%);
-        scroll-snap-align: start;
-      }
-      .gal-arrow {
-        position: absolute;
-        top: calc(50% - 30px);
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
+      .thumb {
+        position: relative;
+        flex: 0 0 auto;
+        width: 108px;
+        aspect-ratio: 16 / 10;
+        padding: 0;
         border: 0;
-        background: rgba(255, 255, 255, 0.95);
-        color: var(--indigo);
-        font-size: 20px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        border-radius: 10px;
+        overflow: hidden;
         cursor: pointer;
-        z-index: 2;
+        opacity: 0.55;
+        transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
       }
-      .gal-arrow.prev { left: -10px; }
-      .gal-arrow.next { right: -10px; }
-      @media (max-width: 640px) { .gal-arrow { display: none; } }
-      .gal img { cursor: zoom-in; }
+      .thumb img { width: 100%; height: 100%; object-fit: cover; }
+      .thumb:hover { opacity: 0.9; }
+      .thumb.on { opacity: 1; transform: translateY(-3px); box-shadow: 0 0 0 3px var(--clay); }
+      .thumb.vid::after {
+        content: '▶';
+        position: absolute; inset: 0;
+        display: grid; place-items: center;
+        color: #fff; font-size: 18px;
+        background: rgba(14, 21, 48, 0.35);
+      }
+      @media (max-width: 640px) {
+        .stage { border-radius: 14px; aspect-ratio: 4 / 3; }
+        .stage-btn { width: 40px; height: 40px; font-size: 20px; top: calc(50% - 20px); }
+        .thumb { width: 84px; }
+      }
       .lb {
-        position: fixed;
-        inset: 0;
-        z-index: 100;
-        background: rgba(10, 14, 30, 0.93);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        padding: 56px 16px 40px;
+        position: fixed; inset: 0; z-index: 100;
+        background: rgba(10, 14, 30, 0.94);
+        display: none; align-items: center; justify-content: center;
+        padding: 56px 16px 48px;
       }
       .lb.open { display: flex; }
-      .lb img,
-      .lb video {
-        max-width: min(1200px, 100%);
-        max-height: 100%;
-        border-radius: 8px;
-      }
-      .lb-cap {
-        position: absolute;
-        bottom: 12px;
-        left: 0;
-        right: 0;
-        text-align: center;
-        color: #fff;
-        font-size: 14px;
-      }
+      .lb img { max-width: min(1400px, 100%); max-height: 100%; border-radius: 8px; }
       .lb button {
-        position: absolute;
-        background: rgba(255, 255, 255, 0.15);
-        color: #fff;
-        border: 0;
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        font-size: 22px;
-        cursor: pointer;
+        position: absolute; background: rgba(255, 255, 255, 0.15); color: #fff;
+        border: 0; width: 44px; height: 44px; border-radius: 50%; font-size: 22px; cursor: pointer;
       }
       .lb .x { top: 10px; right: 12px; }
       .lb .p { left: 12px; top: calc(50% - 22px); }
       .lb .n { right: 12px; top: calc(50% - 22px); }
-      .gal { margin: 0; }
-      .gal img,
-      .gal video {
-        width: 100%;
-        aspect-ratio: 4 / 3;
-        object-fit: cover;
-        border-radius: 10px;
-        background: #000;
-        transition: transform 0.25s ease;
-      }
-      .gal:hover img { transform: scale(1.03); }
-      .gal { overflow: hidden; }
-      .gal-sub {
-        font-family: 'Bricolage Grotesque';
-        font-size: 1.25rem;
-        color: var(--indigo);
-        margin: 8px 0 14px;
-      }
-      .gal-sub small {
-        display: block;
-        font-family: inherit;
-        font-size: 13.5px;
-        color: var(--ink-soft);
-        font-weight: 400;
-        margin-top: 2px;
-      }
     </style>
   </head>
   <body>
@@ -2421,53 +2428,21 @@
           <h2>Our work on the ground</h2>
           <p>Moments from our trainings, workshops and community programs.</p>
         </div>
-        <div class="gal-tabs" role="tablist"><button class="gal-tab" role="tab" data-tab="0" aria-selected="true">Workshops (11)</button><button class="gal-tab" role="tab" data-tab="1" aria-selected="false">Field programs (5)</button><button class="gal-tab" role="tab" data-tab="2" aria-selected="false">Videos (3)</button></div>
-        <div class="gal-panel active" data-panel="0">
-          <button class="gal-arrow prev" aria-label="Previous">‹</button>
-          <button class="gal-arrow next" aria-label="Next">›</button>
-          <div class="gal-grid">
-          <figure class="gal"><img src="images/gallery/5919.jpg" alt="Facilitator leading a session" loading="lazy" /><figcaption>Facilitated session</figcaption></figure>
-          <figure class="gal"><img src="images/gallery/5984.jpg" alt="Trainer addressing participants" loading="lazy" /><figcaption>Training in progress</figcaption></figure>
-          <figure class="gal"><img src="images/gallery/5946.jpg" alt="Participants taking notes" loading="lazy" /><figcaption>Participants at work</figcaption></figure>
-          <figure class="gal"><img src="images/gallery/5952.jpg" alt="Participant contributing during discussion" loading="lazy" /><figcaption>Group discussion</figcaption></figure>
-          <figure class="gal"><img src="images/gallery/5963.jpg" alt="Participant at the workshop" loading="lazy" /><figcaption>Workshop participant</figcaption></figure>
-          <figure class="gal"><img src="images/gallery/5986.jpg" alt="Facilitator engaging the room" loading="lazy" /><figcaption>Interactive learning</figcaption></figure>
-          <figure class="gal"><img src="images/gallery/5993.jpg" alt="Participants during a session" loading="lazy" /><figcaption>Peer learning</figcaption></figure>
-          <figure class="gal"><img src="images/gallery/6019.jpg" alt="Participants working on laptops" loading="lazy" /><figcaption>Strategy planning</figcaption></figure>
-          <figure class="gal"><img src="images/gallery/6024.jpg" alt="Participants taking notes" loading="lazy" /><figcaption>Note-taking and exercises</figcaption></figure>
-          <figure class="gal"><img src="images/gallery/6002.jpg" alt="Participants in the training room" loading="lazy" /><figcaption>Training room</figcaption></figure>
-          <figure class="gal"><img src="images/gallery/6017.jpg" alt="Participant writing notes" loading="lazy" /><figcaption>Active participation</figcaption></figure>
-          </div>
+        <div class="gal-tabs" id="galTabs" role="tablist"></div>
+        <div class="stage" id="stage" aria-live="polite">
+          <button class="stage-btn prev" aria-label="Previous">‹</button>
+          <button class="stage-btn next" aria-label="Next">›</button>
         </div>
-        <div class="gal-panel" data-panel="1">
-          <button class="gal-arrow prev" aria-label="Previous">‹</button>
-          <button class="gal-arrow next" aria-label="Next">›</button>
-          <div class="gal-grid">
-          <figure class="gal"><img src="images/field/skills-group.jpg" alt="Participants and facilitators at a skills acquisition training" loading="lazy" /><figcaption>Skills acquisition training for PWD associations</figcaption></figure>
-          <figure class="gal"><img src="images/field/skills-session.jpg" alt="Trainees making footwear and crafts on the floor" loading="lazy" /><figcaption>Hands-on practical session</figcaption></figure>
-          <figure class="gal"><img src="images/field/skills-footwear.jpg" alt="Trainees crafting sandals and beadwork" loading="lazy" /><figcaption>Footwear and craft production</figcaption></figure>
-          <figure class="gal"><img src="images/field/nfe-group.jpg" alt="Participants of a non-formal education peacebuilding initiative" loading="lazy" /><figcaption>Non-formal education &amp; peacebuilding</figcaption></figure>
-          <figure class="gal"><img src="images/field/nfe-handover.jpg" alt="Handover of items to a beneficiary at a project event" loading="lazy" /><figcaption>Beneficiary support event</figcaption></figure>
-          </div>
-        </div>
-        <div class="gal-panel" data-panel="2">
-          <button class="gal-arrow prev" aria-label="Previous">‹</button>
-          <button class="gal-arrow next" aria-label="Next">›</button>
-          <div class="gal-grid">
-          <figure class="gal"><video controls preload="none" playsinline poster="images/video/v1.jpg"><source src="images/video/v1.mp4" type="video/mp4" /></video><figcaption>Skills training in action</figcaption></figure>
-          <figure class="gal"><video controls preload="none" playsinline poster="images/video/v2.jpg"><source src="images/video/v2.mp4" type="video/mp4" /></video><figcaption>Community training session</figcaption></figure>
-          <figure class="gal"><video controls preload="none" playsinline poster="images/video/v3.jpg"><source src="images/video/v3.mp4" type="video/mp4" /></video><figcaption>Beadwork and crafts</figcaption></figure>
-          </div>
-        </div>
-        <div class="lb" id="lb" aria-modal="true" role="dialog">
+        <div class="thumbs" id="thumbs"></div>
+        <div class="lb" id="lb" role="dialog" aria-modal="true">
           <button class="x" aria-label="Close">×</button>
           <button class="p" aria-label="Previous">‹</button>
           <button class="n" aria-label="Next">›</button>
-          <div id="lbMedia"></div>
-          <div class="lb-cap" id="lbCap"></div>
+          <img id="lbImg" alt="" />
         </div>
       </div>
     </section>
+
 
     <section id="partners">
       <div class="wrap">
@@ -2608,67 +2583,130 @@
         })
       })
     
-      // gallery: tabs, carousel arrows, lightbox
-      (function () {
-        const tabs = document.querySelectorAll('.gal-tab');
-        const panels = document.querySelectorAll('.gal-panel');
-        tabs.forEach((t) =>
-          t.addEventListener('click', () => {
-            tabs.forEach((x) => x.setAttribute('aria-selected', x === t));
-            panels.forEach((p) =>
-              p.classList.toggle('active', p.dataset.panel === t.dataset.tab),
-            );
-          }),
-        );
-        panels.forEach((p) => {
-          const track = p.querySelector('.gal-grid');
-          p.querySelector('.prev').onclick = () =>
-            track.scrollBy({ left: -track.clientWidth * 0.8 });
-          p.querySelector('.next').onclick = () =>
-            track.scrollBy({ left: track.clientWidth * 0.8 });
-        });
-        const lb = document.getElementById('lb');
-        const media = document.getElementById('lbMedia');
-        const cap = document.getElementById('lbCap');
-        let items = [];
-        let idx = 0;
+
+      // Gallery: tabs, featured stage, thumbnails, lightbox
+      ;(function () {
+        const groups = [{"name": "Workshops", "items": [{"t": "i", "src": "images/gallery/5919.jpg", "thumb": "images/gallery/5919.jpg", "cap": "Facilitated session", "alt": "Facilitator leading a session"}, {"t": "i", "src": "images/gallery/5984.jpg", "thumb": "images/gallery/5984.jpg", "cap": "Training in progress", "alt": "Trainer addressing participants"}, {"t": "i", "src": "images/gallery/5946.jpg", "thumb": "images/gallery/5946.jpg", "cap": "Participants at work", "alt": "Participants taking notes"}, {"t": "i", "src": "images/gallery/5952.jpg", "thumb": "images/gallery/5952.jpg", "cap": "Group discussion", "alt": "Participant contributing during discussion"}, {"t": "i", "src": "images/gallery/5963.jpg", "thumb": "images/gallery/5963.jpg", "cap": "Workshop participant", "alt": "Participant at the workshop"}, {"t": "i", "src": "images/gallery/5986.jpg", "thumb": "images/gallery/5986.jpg", "cap": "Interactive learning", "alt": "Facilitator engaging the room"}, {"t": "i", "src": "images/gallery/5993.jpg", "thumb": "images/gallery/5993.jpg", "cap": "Peer learning", "alt": "Participants during a session"}, {"t": "i", "src": "images/gallery/6019.jpg", "thumb": "images/gallery/6019.jpg", "cap": "Strategy planning", "alt": "Participants working on laptops"}, {"t": "i", "src": "images/gallery/6024.jpg", "thumb": "images/gallery/6024.jpg", "cap": "Note-taking and exercises", "alt": "Participants taking notes"}, {"t": "i", "src": "images/gallery/6002.jpg", "thumb": "images/gallery/6002.jpg", "cap": "Training room", "alt": "Participants in the training room"}, {"t": "i", "src": "images/gallery/6017.jpg", "thumb": "images/gallery/6017.jpg", "cap": "Active participation", "alt": "Participant writing notes"}]}, {"name": "Field programs", "items": [{"t": "i", "src": "images/field/skills-group.jpg", "thumb": "images/field/skills-group.jpg", "cap": "Skills acquisition training for PWD associations", "alt": "Participants and facilitators at a skills acquisition training"}, {"t": "i", "src": "images/field/skills-session.jpg", "thumb": "images/field/skills-session.jpg", "cap": "Hands-on practical session", "alt": "Trainees making footwear and crafts on the floor"}, {"t": "i", "src": "images/field/skills-footwear.jpg", "thumb": "images/field/skills-footwear.jpg", "cap": "Footwear and craft production", "alt": "Trainees crafting sandals and beadwork"}, {"t": "i", "src": "images/field/nfe-group.jpg", "thumb": "images/field/nfe-group.jpg", "cap": "Non-formal education & peacebuilding", "alt": "Participants of a non-formal education peacebuilding initiative"}, {"t": "i", "src": "images/field/nfe-handover.jpg", "thumb": "images/field/nfe-handover.jpg", "cap": "Beneficiary support event", "alt": "Handover of items to a beneficiary at a project event"}]}, {"name": "Videos", "items": [{"t": "v", "src": "images/video/v1.mp4", "thumb": "images/video/v1.jpg", "cap": "Skills training in action", "alt": "Skills training in action"}, {"t": "v", "src": "images/video/v2.mp4", "thumb": "images/video/v2.jpg", "cap": "Community training session", "alt": "Community training session"}, {"t": "v", "src": "images/video/v3.mp4", "thumb": "images/video/v3.jpg", "cap": "Beadwork and crafts", "alt": "Beadwork and crafts"}]}]
+        const tabsEl = document.getElementById('galTabs')
+        const stage = document.getElementById('stage')
+        const thumbsEl = document.getElementById('thumbs')
+        const lb = document.getElementById('lb')
+        const lbImg = document.getElementById('lbImg')
+        let g = 0
+        let i = 0
+        let lbOpen = false
+
+        groups.forEach((grp, n) => {
+          const b = document.createElement('button')
+          b.className = 'gal-tab'
+          b.setAttribute('role', 'tab')
+          b.innerHTML = grp.name + '<span>' + grp.items.length + '</span>'
+          b.addEventListener('click', () => {
+            g = n
+            i = 0
+            renderThumbs()
+            show()
+          })
+          tabsEl.appendChild(b)
+        })
+
+        function renderThumbs() {
+          tabsEl.querySelectorAll('.gal-tab').forEach((t, n) =>
+            t.setAttribute('aria-selected', n === g),
+          )
+          thumbsEl.innerHTML = ''
+          groups[g].items.forEach((it, n) => {
+            const t = document.createElement('button')
+            t.className = 'thumb' + (it.t === 'v' ? ' vid' : '')
+            t.setAttribute('aria-label', it.cap)
+            const im = document.createElement('img')
+            im.src = it.thumb
+            im.alt = ''
+            im.loading = 'lazy'
+            t.appendChild(im)
+            t.addEventListener('click', () => {
+              i = n
+              show()
+            })
+            thumbsEl.appendChild(t)
+          })
+        }
+
         function show() {
-          const f = items[idx];
-          const img = f.querySelector('img');
-          media.innerHTML = '';
-          const el = document.createElement('img');
-          el.src = img.src;
-          el.alt = img.alt;
-          media.appendChild(el);
-          cap.textContent = f.querySelector('figcaption').textContent;
+          const items = groups[g].items
+          const it = items[i]
+          stage.querySelectorAll('img, video, .stage-cap').forEach((e) => e.remove())
+          stage.classList.toggle('is-video', it.t === 'v')
+          let el
+          if (it.t === 'v') {
+            el = document.createElement('video')
+            el.src = it.src
+            el.poster = it.thumb
+            el.controls = true
+            el.playsInline = true
+          } else {
+            el = document.createElement('img')
+            el.src = it.src
+            el.alt = it.alt
+            el.addEventListener('click', openLb)
+          }
+          stage.insertBefore(el, stage.firstChild)
+          const cap = document.createElement('div')
+          cap.className = 'stage-cap'
+          cap.innerHTML =
+            '<strong></strong><span class="count">' + (i + 1) + ' / ' + items.length + '</span>'
+          cap.firstChild.textContent = it.cap
+          stage.appendChild(cap)
+          thumbsEl.querySelectorAll('.thumb').forEach((t, n) => {
+            t.classList.toggle('on', n === i)
+            if (n === i) {
+              thumbsEl.scrollTo({
+                left: t.offsetLeft - thumbsEl.clientWidth / 2 + t.clientWidth / 2,
+                behavior: 'smooth',
+              })
+            }
+          })
+          if (lbOpen) lbImg.src = it.src
         }
-        function close() {
-          lb.classList.remove('open');
-          media.innerHTML = '';
+
+        function step(d) {
+          const n = groups[g].items.length
+          i = (i + d + n) % n
+          show()
         }
-        document.querySelectorAll('.gal-panel[data-panel="0"] .gal, .gal-panel[data-panel="1"] .gal').forEach((f) =>
-          f.querySelector('img').addEventListener('click', () => {
-            items = [...f.closest('.gal-panel').querySelectorAll('.gal')];
-            idx = items.indexOf(f);
-            show();
-            lb.classList.add('open');
-          }),
-        );
-        const step = (d) => {
-          idx = (idx + d + items.length) % items.length;
-          show();
-        };
-        lb.querySelector('.x').onclick = close;
-        lb.querySelector('.p').onclick = () => step(-1);
-        lb.querySelector('.n').onclick = () => step(1);
-        lb.addEventListener('click', (e) => e.target === lb && close());
+        function openLb() {
+          lbOpen = true
+          lbImg.src = groups[g].items[i].src
+          lb.classList.add('open')
+        }
+        function closeLb() {
+          lbOpen = false
+          lb.classList.remove('open')
+        }
+
+        stage.querySelector('.prev').addEventListener('click', () => step(-1))
+        stage.querySelector('.next').addEventListener('click', () => step(1))
+        lb.querySelector('.p').addEventListener('click', () => step(-1))
+        lb.querySelector('.n').addEventListener('click', () => step(1))
+        lb.querySelector('.x').addEventListener('click', closeLb)
+        lb.addEventListener('click', (e) => e.target === lb && closeLb())
         document.addEventListener('keydown', (e) => {
-          if (!lb.classList.contains('open')) return;
-          if (e.key === 'Escape') close();
-          if (e.key === 'ArrowLeft') step(-1);
-          if (e.key === 'ArrowRight') step(1);
-        });
-      })();
+          if (lbOpen && e.key === 'Escape') closeLb()
+          if (lbOpen && e.key === 'ArrowLeft') step(-1)
+          if (lbOpen && e.key === 'ArrowRight') step(1)
+        })
+        let x0 = null
+        stage.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true })
+        stage.addEventListener('touchend', (e) => {
+          if (x0 === null) return
+          const dx = e.changedTouches[0].clientX - x0
+          if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1)
+          x0 = null
+        })
+
+        renderThumbs()
+        show()
+      })()
     </script>
   </body>
 </html>
