@@ -1092,6 +1092,103 @@
           scroll-behavior: auto !important;
         }
       }
+
+      /* ---------- PHOTOS ---------- */
+      .hero {
+        position: relative;
+        background-image:
+          linear-gradient(105deg, rgba(31, 46, 88, 0.96) 0%, rgba(31, 46, 88, 0.88) 45%, rgba(31, 46, 88, 0.6) 100%),
+          url('images/hero.jpg');
+        background-size: cover;
+        background-position: center;
+      }
+      .about-photo {
+        margin: 0 0 20px;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(31, 46, 88, 0.18);
+      }
+      .about-photo img {
+        width: 100%;
+        aspect-ratio: 3 / 2;
+        object-fit: cover;
+      }
+      .about-photo figcaption,
+      .gal figcaption {
+        font-size: 12.5px;
+        color: var(--ink-soft);
+        padding: 8px 2px 0;
+      }
+      .photo-band {
+        position: relative;
+        color: #fff;
+        text-align: center;
+        padding: 110px 0;
+        background-image:
+          linear-gradient(rgba(31, 46, 88, 0.72), rgba(31, 46, 88, 0.72)),
+          url('images/banner.jpg');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      }
+      @media (max-width: 900px) {
+        .photo-band {
+          background-attachment: scroll;
+          padding: 70px 0;
+        }
+      }
+      .photo-band .big-quote {
+        font-family: 'Bricolage Grotesque';
+        font-weight: 800;
+        font-size: clamp(2rem, 6vw, 3.4rem);
+        line-height: 1.05;
+      }
+      .photo-band .big-quote span {
+        color: var(--gold);
+      }
+      .photo-band p {
+        max-width: 60ch;
+        margin: 20px auto 0;
+        font-size: 15px;
+        opacity: 0.92;
+      }
+      .gal-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-bottom: 40px;
+      }
+      @media (max-width: 900px) {
+        .gal-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+      .gal { margin: 0; }
+      .gal img,
+      .gal video {
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        border-radius: 10px;
+        background: #000;
+        transition: transform 0.25s ease;
+      }
+      .gal.wide { grid-column: span 2; }
+      .gal.wide img { aspect-ratio: 16 / 9; }
+      .gal a { display: block; overflow: hidden; border-radius: 10px; }
+      .gal a:hover img { transform: scale(1.04); }
+      .gal-sub {
+        font-family: 'Bricolage Grotesque';
+        font-size: 1.25rem;
+        color: var(--indigo);
+        margin: 8px 0 14px;
+      }
+      .gal-sub small {
+        display: block;
+        font-family: inherit;
+        font-size: 13.5px;
+        color: var(--ink-soft);
+        font-weight: 400;
+        margin-top: 2px;
+      }
     </style>
   </head>
   <body>
@@ -1122,6 +1219,7 @@
           <a href="#values">Values</a>
           <a href="#thematic">Programs</a>
           <a href="#impact">Impact</a>
+          <a href="#gallery">Gallery</a>
           <a href="#partners">Partners</a>
           <a href="#contact" class="nav-cta">Partner with us</a>
         </nav>
@@ -1254,6 +1352,11 @@
             administrative systems.
           </p>
         </div>
+        <div>
+        <figure class="about-photo">
+          <img src="images/speaker.jpg" alt="Facilitator addressing a CDVSI capacity-building workshop" loading="lazy" />
+          <figcaption>Capacity-building workshop facilitated by our team, 2026</figcaption>
+        </figure>
         <div class="fact-card">
           <h4>Organisation facts</h4>
           <div class="fact-row">
@@ -1283,6 +1386,7 @@
             <span class="k">EFCC SCUML No.</span
             ><span class="v">SC 021400284</span>
           </div>
+        </div>
         </div>
       </div>
     </section>
@@ -1392,7 +1496,7 @@
       </div>
     </section>
 
-    <section class="motto-section grain">
+    <section class="photo-band">
       <div class="wrap" style="position: relative">
         <div class="big-quote">"Inclusion Means <span>Everyone</span>"</div>
         <p>
@@ -2223,6 +2327,44 @@
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">In pictures</span>
+          <h2>Our work on the ground</h2>
+          <p>Moments from our trainings, workshops and community programs.</p>
+        </div>
+        <h3 class="gal-sub">Capacity-building workshops<small>2026 strategic growth and digital innovation training</small></h3>
+        <div class="gal-grid">
+          <figure class="gal wide"><a href="images/gallery/5919.jpg" target="_blank" rel="noopener"><img src="images/gallery/5919.jpg" alt="Facilitator leading a session" loading="lazy" /></a><figcaption>Facilitated session</figcaption></figure>
+          <figure class="gal"><a href="images/gallery/5984.jpg" target="_blank" rel="noopener"><img src="images/gallery/5984.jpg" alt="Trainer addressing participants" loading="lazy" /></a><figcaption>Training in progress</figcaption></figure>
+          <figure class="gal"><a href="images/gallery/5946.jpg" target="_blank" rel="noopener"><img src="images/gallery/5946.jpg" alt="Participants taking notes" loading="lazy" /></a><figcaption>Participants at work</figcaption></figure>
+          <figure class="gal"><a href="images/gallery/5952.jpg" target="_blank" rel="noopener"><img src="images/gallery/5952.jpg" alt="Participant contributing during discussion" loading="lazy" /></a><figcaption>Group discussion</figcaption></figure>
+          <figure class="gal"><a href="images/gallery/5963.jpg" target="_blank" rel="noopener"><img src="images/gallery/5963.jpg" alt="Participant at the workshop" loading="lazy" /></a><figcaption>Workshop participant</figcaption></figure>
+          <figure class="gal wide"><a href="images/gallery/5986.jpg" target="_blank" rel="noopener"><img src="images/gallery/5986.jpg" alt="Facilitator engaging the room" loading="lazy" /></a><figcaption>Interactive learning</figcaption></figure>
+          <figure class="gal"><a href="images/gallery/5993.jpg" target="_blank" rel="noopener"><img src="images/gallery/5993.jpg" alt="Participants during a session" loading="lazy" /></a><figcaption>Peer learning</figcaption></figure>
+          <figure class="gal"><a href="images/gallery/6019.jpg" target="_blank" rel="noopener"><img src="images/gallery/6019.jpg" alt="Participants working on laptops" loading="lazy" /></a><figcaption>Strategy planning</figcaption></figure>
+          <figure class="gal"><a href="images/gallery/6024.jpg" target="_blank" rel="noopener"><img src="images/gallery/6024.jpg" alt="Participants taking notes" loading="lazy" /></a><figcaption>Note-taking and exercises</figcaption></figure>
+          <figure class="gal"><a href="images/gallery/6002.jpg" target="_blank" rel="noopener"><img src="images/gallery/6002.jpg" alt="Participants in the training room" loading="lazy" /></a><figcaption>Training room</figcaption></figure>
+          <figure class="gal"><a href="images/gallery/6017.jpg" target="_blank" rel="noopener"><img src="images/gallery/6017.jpg" alt="Participant writing notes" loading="lazy" /></a><figcaption>Active participation</figcaption></figure>
+        </div>
+        <h3 class="gal-sub">Field programs<small>Skills acquisition and non-formal education initiatives</small></h3>
+        <div class="gal-grid">
+          <figure class="gal wide"><a href="images/field/skills-group.jpg" target="_blank" rel="noopener"><img src="images/field/skills-group.jpg" alt="Participants and facilitators at a skills acquisition training" loading="lazy" /></a><figcaption>Skills acquisition training for PWD associations</figcaption></figure>
+          <figure class="gal"><a href="images/field/skills-session.jpg" target="_blank" rel="noopener"><img src="images/field/skills-session.jpg" alt="Trainees making footwear and crafts on the floor" loading="lazy" /></a><figcaption>Hands-on practical session</figcaption></figure>
+          <figure class="gal"><a href="images/field/skills-footwear.jpg" target="_blank" rel="noopener"><img src="images/field/skills-footwear.jpg" alt="Trainees crafting sandals and beadwork" loading="lazy" /></a><figcaption>Footwear and craft production</figcaption></figure>
+          <figure class="gal wide"><a href="images/field/nfe-group.jpg" target="_blank" rel="noopener"><img src="images/field/nfe-group.jpg" alt="Participants of a non-formal education peacebuilding initiative" loading="lazy" /></a><figcaption>Non-formal education &amp; peacebuilding</figcaption></figure>
+          <figure class="gal"><a href="images/field/nfe-handover.jpg" target="_blank" rel="noopener"><img src="images/field/nfe-handover.jpg" alt="Handover of items to a beneficiary at a project event" loading="lazy" /></a><figcaption>Beneficiary support event</figcaption></figure>
+        </div>
+        <h3 class="gal-sub">Videos</h3>
+        <div class="gal-grid">
+          <figure class="gal"><video controls preload="none" playsinline poster="images/video/v1.jpg"><source src="images/video/v1.mp4" type="video/mp4" /></video><figcaption>Skills training in action</figcaption></figure>
+          <figure class="gal"><video controls preload="none" playsinline poster="images/video/v2.jpg"><source src="images/video/v2.mp4" type="video/mp4" /></video><figcaption>Community training session</figcaption></figure>
+          <figure class="gal"><video controls preload="none" playsinline poster="images/video/v3.jpg"><source src="images/video/v3.mp4" type="video/mp4" /></video><figcaption>Beadwork and crafts</figcaption></figure>
         </div>
       </div>
     </section>
